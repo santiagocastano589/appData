@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Informaría Personal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .login-screen {
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .login-screen h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e1e1;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .app-screen {
+            display: none;
+            height: 100vh;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .logout-btn {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .info-section {
+            background: #f8f9ff;
+            margin-bottom: 15px;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-section h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .info-section p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .contact-icon {
+            width: 30px;
+            height: 30px;
+            background: #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .quick-note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .quick-note h4 {
+            color: #856404;
+            margin-bottom: 8px;
+        }
+
+        .error-msg {
+            color: #d63031;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                width: 100%;
+                height: 100vh;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Pantalla de Login -->
+        <div class="login-screen" id="loginScreen">
+            <h1>🔐 Mi Informaría</h1>
+            <div class="input-group">
+                <input type="password" id="passwordInput" placeholder="Ingresa tu contraseña" />
+            </div>
+            <button class="login-btn" onclick="login()">Acceder</button>
+            <div class="error-msg" id="errorMsg"></div>
+            <p style="font-size: 12px; color: #666; margin-top: 20px;">
+                Contraseña por defecto: <strong>1234</strong><br>
+                (Puedes cambiarla en el código)
+            </p>
+        </div>
+
+        <!-- Pantalla Principal -->
+        <div class="app-screen" id="appScreen">
+            <div class="header">
+                <h1>📱 Mi Informaría Personal</h1>
+                <button class="logout-btn" onclick="logout()">Salir</button>
+            </div>
+            
+            <div class="content">
+                <!-- Información Personal -->
+                <div class="info-section">
+                    <h3>👤 Información Personal</h3>
+                    <p><strong>Nombre:</strong> [Tu Nombre]</p>
+                    <p><strong>Documento:</strong> [Tu Documento]</p>
+                    <p><strong>Teléfono:</strong> [Tu Teléfono]</p>
+                    <p><strong>Email:</strong> [Tu Email]</p>
+                </div>
+
+                <!-- Contactos de Emergencia -->
+                <div class="info-section">
+                    <h3>🚨 Contactos de Emergencia</h3>
+                    <div class="contact-item">
+                        <div class="contact-icon">👥</div>
+                        <div>
+                            <strong>Familia</strong><br>
+                            <span style="color: #666;">+57 123 456 7890</span>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">🏥</div>
+                        <div>
+                            <strong>Médico Personal</strong><br>
+                            <span style="color: #666;">+57 098 765 4321</span>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">🚔</div>
+                        <div>
+                            <strong>Policía</strong><br>
+                            <span style="color: #666;">123</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información Médica -->
+                <div class="info-section">
+                    <h3>⚕️ Información Médica</h3>
+                    <p><strong>Tipo de Sangre:</strong> [Tu tipo de sangre]</p>
+                    <p><strong>Alergias:</strong> [Alergias conocidas]</p>
+                    <p><strong>Medicamentos:</strong> [Medicamentos actuales]</p>
+                    <p><strong>Condiciones:</strong> [Condiciones médicas]</p>
+                </div>
+
+                <!-- Recordatorios -->
+                <div class="info-section">
+                    <h3>📋 Recordatorios Importantes</h3>
+                    <div class="quick-note">
+                        <h4>💊 Medicamentos</h4>
+                        <p>Recordar tomar medicamentos a las 8:00 AM</p>
+                    </div>
+                    <div class="quick-note">
+                        <h4>📅 Citas</h4>
+                        <p>Próxima cita médica: [Fecha]</p>
+                    </div>
+                </div>
+
+                <!-- Direcciones Importantes -->
+                <div class="info-section">
+                    <h3>📍 Direcciones Importantes</h3>
+                    <p><strong>Casa:</strong> [Tu dirección]</p>
+                    <p><strong>Trabajo:</strong> [Dirección trabajo]</p>
+                    <p><strong>Hospital más cercano:</strong> [Dirección hospital]</p>
+                </div>
+
+                <!-- Notas Personales -->
+                <div class="info-section">
+                    <h3>📝 Notas Personales</h3>
+                    <textarea id="personalNotes" placeholder="Escribe tus notas aquí..." style="width: 100%; height: 100px; padding: 10px; border: 1px solid #ddd; border-radius: 8px; resize: vertical;"></textarea>
+                    <button onclick="saveNotes()" style="margin-top: 10px; padding: 8px 15px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer;">Guardar Notas</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Contraseña (puedes cambiarla aquí)
+        const correctPassword = "1234";
+
+        // Al cargar la página
+        window.onload = function() {
+            loadNotes();
+            // Permitir Enter para hacer login
+            document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    login();
+                }
+            });
+        };
+
+        function login() {
+            const password = document.getElementById('passwordInput').value;
+            const errorMsg = document.getElementById('errorMsg');
+            
+            if (password === correctPassword) {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('appScreen').style.display = 'block';
+                errorMsg.textContent = '';
+            } else {
+                errorMsg.textContent = 'Contraseña incorrecta. Inténtalo de nuevo.';
+                document.getElementById('passwordInput').value = '';
+            }
+        }
+
+        function logout() {
+            document.getElementById('loginScreen').style.display = 'block';
+            document.getElementById('appScreen').style.display = 'none';
+            document.getElementById('passwordInput').value = '';
+        }
+
+        function saveNotes() {
+            const notes = document.getElementById('personalNotes').value;
+            // En un entorno real, esto se guardaría en una base de datos
+            // Por ahora, solo mostramos un mensaje de confirmación
+            alert('Notas guardadas correctamente');
+        }
+
+        function loadNotes() {
+            // Aquí cargarías las notas guardadas
+            // Por ahora, dejamos el campo vacío
+        }
+    </script>
+</body>
+</html>
